@@ -1,43 +1,84 @@
 using System;
 using Neo.Collections;
 
-namespace Neo.Queues{
+namespace Neo.Queues {
+  /// <summary>
+  /// A script queue is a queue item which executed 0..n other queue items
+  /// after another. When one item has be finished the next item is played
+  /// until no further items are available. You can add or prepend further items
+  /// before the execution starts.
+  /// 
+  /// The Script item finishes when all queue items has been finished.
+  /// </summary>
+  /// <example><![CDATA[
+  /// Script queue = new Script(
+  ///   buildFirstTween(),
+  ///   new Delegation(someLongMethod)
+  /// );
+  /// queue.Prepend(new QAnimation(findUnityAnimation()));
+  /// queue.Play();
+  /// ]]></example>
+  public class Script : Base {
+    private List<IQueueable> list = new List<IQueueable>();
+    private int currentIndex;
 
-  public class Script : Base{
-    private List<IQueueable> List = new List<IQueueable>();
-    private int CurrentIndex;
-
-    public Script() : base(){
+    /// <summary>
+    /// Constructs an empty queue
+    /// </summary>
+    public Script()
+      : base() {
     }
 
-    public Script(IQueueable q, params IQueueable[] args) : base(){
-      List.Add(q);
-      List.AddRange(args);
+    /// <summary>
+    /// Constructs a queue bound to 1..n queue items
+    /// </summary>
+    /// <param name="item">a queue item to execute</param>
+    /// <param name="items">further items to be executed sequentially</param>
+    public Script(IQueueable item, params IQueueable[] items)
+      : base() {
+      list.Add(item);
+      list.AddRange(items);
     }
 
-    public Script(IQueueable[] args) : base(){
-      List.AddRange(args);
+    /// <summary>
+    /// Constructs a queue from an array of queue items
+    /// </summary>
+    /// <param name="items">to be executed sequentially</param>
+    public Script(IQueueable[] items)
+      : base() {
+        list.AddRange(items);
     }
 
-    public void Add(IQueueable q){
-      List.Add(q);
+    /// <summary>
+    /// Adds (appends) a futher queue item
+    /// </summary>
+    /// <param name="item">to be appended</param>
+    public void Add(IQueueable item) {
+      list.Add(item);
     }
 
-    public void Prepend(IQueueable q){
-      List.Insert(0, q);
+    /// <summary>
+    /// Prepends a further queue item
+    /// </summary>
+    /// <param name="item">to be prepended</param>
+    public void Prepend(IQueueable item) {
+      list.Insert(0, item);
     }
 
-    protected override void Execute(){
-      CurrentIndex = -1;
+    /// <summary>
+    /// Executes this queue item
+    /// </summary>
+    protected override void Execute() {
+      currentIndex = -1;
       Proceed();
     }
 
-    private void Proceed(){
-      CurrentIndex++;
-      if(CurrentIndex >= List.Count){
+    private void Proceed() {
+      currentIndex++;
+      if(currentIndex >= list.Count) {
         Finished();
-      } else{
-        IQueueable Next = List[CurrentIndex];
+      } else {
+        IQueueable Next = list[currentIndex];
         Next.Play(Proceed);
       }
     }

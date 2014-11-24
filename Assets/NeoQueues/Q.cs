@@ -1,48 +1,118 @@
 using System;
 
 namespace Neo.Queues{
-  public sealed class Q{
-
-    public static Base Base(bool DirectFinishOnPlay = false){
-      return new Base(DirectFinishOnPlay);
+  /// <summary>
+  /// This class allows shortcuts for creating queue items. See the separate classes
+  /// for further documentation.
+  /// </summary>
+  /// <example><![CDATA[
+  /// Q.Script(
+  ///   Q.Parallel(
+  ///     Q.Tween(gameObject.transform, 1.5f, new TweenParms().Prop("position", targetPosition)),
+  ///     Q.Animation(gameObject.GetComponent<Animation>())
+  ///   ),
+  ///   Q.Delegation(invokeAfterAnimationAndTween)
+  /// );
+  /// ]]></example>
+  public static class Q{
+    /// <summary>
+    /// Builds a simple (empty) queue item
+    /// </summary>
+    /// <param name="directFinishOnPlay"></param>
+    /// <returns>A new Base queue item</returns>
+    public static Base Base(bool directFinishOnPlay = false){
+      return new Base(directFinishOnPlay);
     }
 
-    public static Script Script(params IQueueable[] args){
-      return new Script(args);
+    /// <summary>
+    /// Builds a sequential queue
+    /// </summary>
+    /// <param name="items">to be queued</param>
+    /// <returns>A new sequential queue</returns>
+    public static Script Script(params IQueueable[] items){
+      return new Script(items);
     }
 
-    public static Parallel Parallel(params IQueueable[] args){
-      return new Parallel(args);
+    /// <summary>
+    /// Builds a (pseudo)-parallel queue
+    /// </summary>
+    /// <param name="items">to be queued</param>
+    /// <returns>A new parallel queue</returns>
+    public static Parallel Parallel(params IQueueable[] items){
+      return new Parallel(items);
     }
 
-    public static Delegation Delegation(QueueableDelegate What){
-      return new Delegation(What);
+    /// <summary>
+    /// Wraps a delegate
+    /// </summary>
+    /// <param name="what">to be queued</param>
+    /// <returns>A new queue item for the delegation</returns>
+    public static Delegation Delegation(QueueableDelegate what){
+      return new Delegation(what);
     }
 
-    public static Tween Tween(object Target, float Duration, Holoville.HOTween.TweenParms Params){
-      return new Tween(Target, Duration, Params);
+    /// <summary>
+    /// Wraps a HOTween tween into a queue item
+    /// </summary>
+    /// <param name="target">of the tween</param>
+    /// <param name="duration">of the tween</param>
+    /// <param name="targetParams">for the tween</param>
+    /// <returns>A new queue item from the tween</returns>
+    public static Tween Tween(object target, float duration, Holoville.HOTween.TweenParms targetParams){
+      return new Tween(target, duration, targetParams);
     }
 
+    /// <summary>
+    /// Wraps a HOTween tween sequence as a queue item
+    /// </summary>
+    /// <param name="sequence">to be wrapped</param>
+    /// <returns>A new queue item for the tween sequence</returns>
     public static TweenSequence TweenSequence(Holoville.HOTween.Sequence sequence){
       return new TweenSequence(sequence);
     }
 
-    public static QAnimation Animation(UnityEngine.Animation ani){
-      return new QAnimation(ani);
+    /// <summary>
+    /// Wraps a Unity animation as a queue item
+    /// </summary>
+    /// <param name="animation">to be queued</param>
+    /// <returns>A new queue item for the animation</returns>
+    public static QAnimation Animation(UnityEngine.Animation animation){
+      return new QAnimation(animation);
     }
 
+    /// <summary>
+    /// Builds a time-based queue item
+    /// </summary>
+    /// <param name="seconds">to be waited</param>
+    /// <returns>A new queue item which will wait the given seconds</returns>
     public static Timeout Timeout(float seconds){
       return new Timeout(seconds);
     }
 
+    /// <summary>
+    /// Wraps any Unity YieldingInstruction as a queue item.
+    /// </summary>
+    /// <param name="instruction">to be wrapped</param>
+    /// <returns>A new queue item for the instruction</returns>
     public static Yielding Yielding(UnityEngine.YieldInstruction instruction){
       return new Yielding(instruction);
     }
-  
+
+    /// <summary>
+    /// Allow short creation of a Lazy queue item which "real" queue content
+    /// will be determined at time of execution.
+    /// </summary>
+    /// <param name="generator">to build the "real" queue item</param>
+    /// <returns>A new lazy queue item</returns>
     public static Lazy Lazy(Func<IQueueable> generator){
       return new Lazy(generator);
     }
 
+    /// <summary>
+    /// Wraps any task as a queue item
+    /// </summary>
+    /// <param name="what">to be queued</param>
+    /// <returns>A new queued task item</returns>
     public static Task Task(QueueTask what) {
       return new Task(what);
     }

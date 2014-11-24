@@ -1,46 +1,86 @@
 using Neo.Collections;
 
-namespace Neo.Queues{
+namespace Neo.Queues {
+  /// <summary>
+  /// A Parallel queue item allow the pseudo-parallel execution of 0..n other queue items.
+  /// The queue items "Play" method will be invoked in order, so you might like to 
+  /// "Add" or "Prepend" new items. But you should add further items once the execution has been
+  /// started.
+  /// 
+  /// When all items have been called a Parallel is finished.
+  /// </summary>
+  /// <example><![CDATA[
+  /// Parallel queue = new Parallel(
+  ///   new Delegation(someLongMethod),
+  ///   new Yielding(buildWebRequest())
+  /// );
+  /// queue.Prepend(buildSomeTweenAnimation());
+  /// queue.Play();
+  /// ]]></example>
+  public class Parallel : Base {
+    private List<IQueueable> list = new List<IQueueable>();
+    private int countDownLatch;
 
-  public class Parallel : Base{
-    private List<IQueueable> List = new List<IQueueable>();
-    private int CountDownLatch;
-
-    public Parallel() : base(){
+    /// <summary>
+    /// Construct an empty parallel queue
+    /// </summary>
+    public Parallel()
+      : base() {
     }
 
-    public Parallel(IQueueable q, params IQueueable[] args) : base(){
-      List.Add(q);
-      List.AddRange(args);
+    /// <summary>
+    /// Constructs a Parallel which is bound to 1..n queue items
+    /// </summary>
+    /// <param name="q">a queue item</param>
+    /// <param name="args">further queue items to be executed in parallel</param>
+    public Parallel(IQueueable q, params IQueueable[] args)
+      : base() {
+      list.Add(q);
+      list.AddRange(args);
     }
 
-    public Parallel(IQueueable[] args) : base(){
-      List.AddRange(args);
+    /// <summary>
+    /// Constructs a Parallel from an array of queue items
+    /// </summary>
+    /// <param name="args">to be executed in parallel</param>
+    public Parallel(IQueueable[] args)
+      : base() {
+      list.AddRange(args);
     }
 
-    public void Add(IQueueable q){
-      List.Add(q);
+    /// <summary>
+    /// Add another queue item (at the end of the execution list)
+    /// </summary>
+    /// <param name="q">to be exectued in parallel</param>
+    public void Add(IQueueable q) {
+      list.Add(q);
     }
 
-    public void Prepend(IQueueable q){
-      List.Insert(0, q);
+    /// <summary>
+    /// Add another queue item (at the beginning of the execution list)
+    /// </summary>
+    /// <param name="q">to be executed in parallel</param>
+    public void Prepend(IQueueable q) {
+      list.Insert(0, q);
     }
 
-    protected override void Execute(){
-      if(List.Count == 0) {
+    /// <summary>
+    /// Executes this queue item
+    /// </summary>
+    protected override void Execute() {
+      if(list.Count == 0) {
         Finished();
-      } else{
-        CountDownLatch = 0;
-        for(int i=0,imax = List.Count; i<imax; i++) List[i].Play(Done);
+      } else {
+        countDownLatch = 0;
+        for(int i = 0, imax = list.Count; i < imax; i++) list[i].Play(Done);
       }
     }
 
-    private void Done(){
-      CountDownLatch++;
-      if(CountDownLatch == List.Count){
+    private void Done() {
+      countDownLatch++;
+      if(countDownLatch == list.Count) {
         Finished();
       }
     }
-
   }
 }
