@@ -11,22 +11,22 @@ namespace Neo.Queues {
   /// QAnimation qAni = new QAnimation(gameObject.GetComponent<Animation>());
   /// ]]></example>
   public class QAnimation : Base {
-    private UnityEngine.Animation Ani;
+    private UnityEngine.Animation ani;
 
     /// <summary>
     /// Construct a queue item bound to a Unity animation
     /// </summary>
-    /// <param name="Ani"></param>
-    public QAnimation(UnityEngine.Animation Ani)
+    /// <param name="ani"></param>
+    public QAnimation(UnityEngine.Animation ani)
       : base() {
-      this.Ani = Ani;
+      this.ani = ani;
     }
 
     /// <summary>
     /// Stops the animation and finishes this queue item
     /// </summary>
     public void Abort() {
-      Ani.Stop();
+      ani.Stop();
       Finished();
     }
 
@@ -34,8 +34,8 @@ namespace Neo.Queues {
     /// Executes this queue item
     /// </summary>
     protected override void Execute() {
-      Ani.Play();
-      Async.CoroutineStarter.Instance.Add(waitForAnimation(Ani));
+      ani.Play();
+      Async.CoroutineStarter.Instance.Add(waitForAnimation(ani));
     }
 
     private IEnumerator waitForAnimation(UnityEngine.Animation ani) {
