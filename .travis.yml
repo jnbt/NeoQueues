@@ -1,0 +1,16 @@
+language: objective-c
+
+env:
+ matrix:
+  - UNITY_VER="4.6.2"
+
+before_install:
+ - wget "http://netstorage.unity3d.com/unity/unity-${UNITY_VER}.dmg"
+ - hdid "unity-${UNITY_VER}.dmg"
+ - sudo installer -pkg "/Volumes/Unity Installer/Unity.pkg" -target /
+
+script:
+ - /Applications/Unity/Unity.app/Contents/MacOS/Unity -projectPath $PWD -executeMethod UnityTest.Batch.RunUnitTests
+
+after_script:
+ - cat UnitTestResults.xml
