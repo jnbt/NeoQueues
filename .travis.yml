@@ -10,7 +10,8 @@ before_install:
  - sudo installer -pkg "/Volumes/Unity Installer/Unity.pkg" -target /
 
 script:
- - /Applications/Unity/Unity.app/Contents/MacOS/Unity -quit -batchmode -projectPath "$TRAVIS_BUILD_DIR" -executeMethod UnityTest.Batch.RunUnitTests
+ - /Applications/Unity/Unity.app/Contents/MacOS/Unity -quit -batchmode -projectPath $PWD -executeMethod UnityTest.Batch.RunUnitTests
 
 after_script:
+ - cat ~/Library/Logs/Unity/Editor.log
  - cat UnitTestResults.xml
