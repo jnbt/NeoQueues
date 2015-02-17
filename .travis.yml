@@ -6,7 +6,7 @@ env:
 
 before_install:
  - export DISPLAY=:99.0
- - sh -e /etc/init.d/xvfb start
+ - sh -e /opt/X11/bin/xvfb start
  - wget "http://netstorage.unity3d.com/unity/unity-${UNITY_VER}.dmg"
  - hdid "unity-${UNITY_VER}.dmg"
  - sudo installer -pkg "/Volumes/Unity Installer/Unity.pkg" -target /
