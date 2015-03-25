@@ -1,0 +1,269 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NeoAsync</name>
+    </assembly>
+    <members>
+        <member name="T:Neo.Async.Cache`1">
+             <summary>
+             Provides a generic cache for any kind of objects which loading
+             might need some time and can be referenced by a string key
+             Idea: Provide a function to load one object via key. This
+             loader will only be called once per key (until the cache is cleared)
+            
+             This implies that you have to fetch objects from the cache via a callback instead
+             of a simple getter, as the loading might need some time and might be done in the background
+             </summary>
+             <example>
+             <![CDATA[
+               class SomeClass{
+                 private readonly Cache<UnityEngine.GameObject> cache;
+            
+                 public SomeClass(){
+                   cache = new Cache<UnityEngine.GameObject>(resolveGameObject);
+                 }
+            
+                 public void Do(){
+                   cache.Get("MyBigGameObject", (go) => go.transform.position = UnityEngine.Vector3.zero);
+                 }
+            
+                 private GameObject resolveGameObject(string key){
+                   UnityEngine.Resources.Load<GameObject>(key);
+                 }
+               }
+             ]]>
+             </example>
+             <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Neo.Async.Cache`1.#ctor(Neo.Async.Cache{`0}.LoaderFunction)">
+            <summary>
+            Initializes a new cache which is bound to a specific loader function
+            </summary>
+            <param name="loader">to be called to load items</param>
+        </member>
+        <member name="M:Neo.Async.Cache`1.Get(System.String,Neo.Async.Cache{`0}.CallbackFunction)">
+            <summary>
+            Retreives an item from the cache or loads it
+            </summary>
+            <param name="key">to lookup</param>
+            <param name="callback">to be calles when loaded</param>
+        </member>
+        <member name="M:Neo.Async.Cache`1.Clear">
+            <summary>
+            Clears the whole cache
+            </summary>
+        </member>
+        <member name="T:Neo.Async.Cache`1.LoaderFunction">
+            <summary>
+            Function to be called to load single items into the cache
+            </summary>
+            <param name="key">which is looked up</param>
+            <param name="loader">to call when loaded</param>
+        </member>
+        <member name="T:Neo.Async.Cache`1.CallbackFunction">
+            <summary>
+            Function to be called when accessing items on the cache
+            </summary>
+            <param name="item">which is loaded from cache or lazy</param>
+        </member>
+        <member name="T:Neo.Async.CoroutineStarter">
+            <summary>
+            Allows starting a Unity-based coroutine from any instance.
+            This is needed as only objects which inherit from MonoBehavior can
+            start a coroutine, but you might not use this inheritance.
+            </summary>
+            <example>
+            <![CDATA[
+              class SomeClass {
+                public void Do(){
+                  CoroutineStarter.Instance.Add(doLazy());
+                }
+                private IEnumerator doLazy(){
+                  yield return UnityEngine.WaitForSeconds(5f);
+                  UnityEngine.Debug.Log("This should be invoked as a coroutine");
+                }
+              }
+            ]]>
+            </example>
+        </member>
+        <member name="M:Neo.Async.CoroutineStarter.Add(System.Collections.IEnumerator)">
+            <summary>
+            Adds an Unity-base coroutine via an IEnumerator
+            </summary>
+            <param name="task"></param>
+        </member>
+        <member name="P:Neo.Async.CoroutineStarter.Instance">
+            <summary>
+            Returns the single GameObject-based instance
+            </summary>
+        </member>
+        <member name="T:Neo.Async.IDeferred">
+            <summary>
+            Represents a deferred invocation of a callback
+            </summary>
+        </member>
+        <member name="M:Neo.Async.IDeferred.Start">
+            <summary>
+            Starts the coroutine. When completed the callback will be called
+            </summary>
+        </member>
+        <member name="M:Neo.Async.IDeferred.Abort">
+            <summary>
+            Starts the coroutine. When completed the callback will be called
+            </summary>
+        </member>
+        <member name="P:Neo.Async.IDeferred.Finished">
+            <summary>
+            True if the invocation already happend since the last Start
+            </summary>
+        </member>
+        <member name="P:Neo.Async.IDeferred.Aborted">
+            <summary>
+            True if the invocation will not happend since the last start
+            </summary>
+        </member>
+        <member name="P:Neo.Async.IDeferred.Seconds">
+            <summary>
+            Seconds to defer
+            </summary>
+        </member>
+        <member name="P:Neo.Async.IDeferred.Callback">
+            <summary>
+            Callback to be called on invocation
+            </summary>
+        </member>
+        <member name="T:Neo.Async.ITiming">
+             <summary>
+             Allows easy time-driven callbacks:
+              * After(seconds, callback)
+                Invokes a callback after the timeout in seconds.
+              * Every(seconds, callback)
+                Invokes a callback every x seconds. First time in x seconds.
+             </summary>
+            
+             <example>
+               [Inject]
+               public ITiming Timing { get; set; }
+               ...
+               Timing.After(5, () => UnityEngine.Debug.Log("This will be invoked in 5 seconds"));
+               Timing.Every(5, () => UnityEnging.Debug.Log("This will be invoked EVERY 5 seconds"));
+             </example>
+             
+             <remarks>
+               All calls return a "Deferred" object which allows calling an Abort method
+               will which stop the time-driven callback.
+             </remarks>
+        </member>
+        <member name="M:Neo.Async.ITiming.After(System.Int32,System.Action)">
+            <summary>
+            Builds and starts a deferral for x seconds. Than the callback is called.
+            </summary>
+            <param name="s">to wait</param>
+            <param name="cb">to call</param>
+            <returns>the deferral</returns>
+        </member>
+        <member name="M:Neo.Async.ITiming.After(System.Single,System.Action)">
+            <summary>
+            Builds and starts a deferral for x seconds. Than the callback is called.
+            </summary>
+            <param name="s">to wait</param>
+            <param name="cb">to call</param>
+            <returns>the deferral</returns>
+        </member>
+        <member name="M:Neo.Async.ITiming.Every(System.Int32,System.Action)">
+            <summary>
+            Builds and starts a deferral for x seconds. The callback is called every x seconds.
+            </summary>
+            <param name="s">to use as interval</param>
+            <param name="cb">to call</param>
+            <returns>the deferral</returns>
+        </member>
+        <member name="M:Neo.Async.ITiming.Every(System.Single,System.Action)">
+            <summary>
+            Builds and starts a deferral for x seconds. The callback is called every x seconds.
+            </summary>
+            <param name="s">to use as interval</param>
+            <param name="cb">to call</param>
+            <returns>the deferral</returns>
+        </member>
+        <member name="T:Neo.Async.Timing">
+            <summary>
+            Allows easy interactions with deferred (or repeated) calls
+            </summary>
+        </member>
+        <member name="M:Neo.Async.Timing.After(System.Int32,System.Action)">
+            <summary>
+            Calls the callback after the given seconds
+            </summary>
+            <param name="seconds">to wait</param>
+            <param name="callback">to be called</param>
+            <returns>A deferred call instance</returns>
+        </member>
+        <member name="M:Neo.Async.Timing.After(System.Single,System.Action)">
+            <summary>
+            Calls the callback after the given seconds
+            </summary>
+            <param name="seconds">to wait</param>
+            <param name="callback">to be called</param>
+            <returns>A deferred call instance</returns>
+        </member>
+        <member name="M:Neo.Async.Timing.Every(System.Int32,System.Action)">
+            <summary>
+            Calls the callback every x seconds. First time in x seconds
+            </summary>
+            <param name="seconds">to use as an interval</param>
+            <param name="callback">to be called</param>
+            <returns>A deferred call instance</returns>
+        </member>
+        <member name="M:Neo.Async.Timing.Every(System.Single,System.Action)">
+            <summary>
+            Calls the callback every x seconds. First time in x seconds
+            </summary>
+            <param name="seconds">to use as an interval</param>
+            <param name="callback">to be called</param>
+            <returns>A deferred call instance</returns>
+        </member>
+        <member name="T:Neo.Async.UnityDeferred">
+            <summary>
+            Represents a deferred call using Unity's coroutines
+            </summary>
+        </member>
+        <member name="M:Neo.Async.UnityDeferred.#ctor(System.Single,System.Action)">
+            <summary>
+            Creates in instance which describes a deferred call
+            </summary>
+            <param name="s">to use as timeout or interval</param>
+            <param name="cb">to be called</param>
+        </member>
+        <member name="M:Neo.Async.UnityDeferred.Start">
+            <summary>
+            Start the deferred call
+            </summary>
+        </member>
+        <member name="M:Neo.Async.UnityDeferred.Abort">
+            <summary>
+            Abort the deferred call if not already executed
+            </summary>
+        </member>
+        <member name="P:Neo.Async.UnityDeferred.Seconds">
+            <summary>
+            Seconds to wait as a timeout
+            </summary>
+        </member>
+        <member name="P:Neo.Async.UnityDeferred.Callback">
+            <summary>
+            Callback to called in a deferred way
+            </summary>
+        </member>
+        <member name="P:Neo.Async.UnityDeferred.Finished">
+            <summary>
+            Is the deferred call already executed?
+            </summary>
+        </member>
+        <member name="P:Neo.Async.UnityDeferred.Aborted">
+            <summary>
+            Was the deferred call aborted?
+            </summary>
+        </member>
+    </members>
+</doc>
