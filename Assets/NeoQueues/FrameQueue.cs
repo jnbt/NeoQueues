@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using Neo.Collections;
 
 namespace Neo.Queues {
   /// <summary>
@@ -16,9 +16,11 @@ namespace Neo.Queues {
   /// ]]></example>
   /// <typeparam name="T">The item type</typeparam>
   public class FrameQueue<T> : Base {
-    private List<T> items;
-    private Action<T, int> block;
-    private int i, imax, initialBoost;
+    private readonly List<T> items;
+    private readonly Action<T, int> block;
+    private int i;
+    private readonly int imax;
+    private readonly int initialBoost;
 
     /// <summary>
     /// Constructs a FrameQueue for the given list of items
@@ -28,8 +30,11 @@ namespace Neo.Queues {
     /// <param name="block">the processor per item</param>
     public FrameQueue(List<T> items, int initialBoost, Action<T, int> block)
       : base() {
-      this.items = items; this.block = block;
-      i = 0; imax = items.Count; this.initialBoost = Mathf.Min(initialBoost, imax);
+      this.items = items; 
+      this.block = block;
+      i = 0; 
+      imax = items.Count; 
+      this.initialBoost = Mathf.Min(initialBoost, imax);
     }
 
     /// <summary>

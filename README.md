@@ -40,7 +40,6 @@ can be included into your project.
 
 ## Dependencies
 
-* [NeoCollections](https://github.com/jnbt/NeoCollections)
 * [NeoAsync](https://github.com/jnbt/NeoAsync)
 * [DOTween](https://github.com/Demigiant/dotween) 
 

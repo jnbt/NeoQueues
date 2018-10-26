@@ -1,7 +1,6 @@
-﻿using System;
-using NUnit.Framework;
-using Neo.Collections;
+﻿using NUnit.Framework;
 using Neo.Queues;
+using System.Collections.Generic;
 
 namespace Tests.Neo.Queues {
   [TestFixture]
@@ -16,7 +15,7 @@ namespace Tests.Neo.Queues {
         calls.Add("two");
       });
 
-      Assert.IsTrue(calls.IsEmpty);
+      Assert.IsTrue(calls.Count == 0);
 
       t.Play(() => {
         calls.Add("play");
@@ -37,7 +36,7 @@ namespace Tests.Neo.Queues {
         calls.Add("two");
       });
 
-      Assert.IsTrue(calls.IsEmpty);
+      Assert.IsTrue(calls.Count == 0);
 
       t.Play();
 

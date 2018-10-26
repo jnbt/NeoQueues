@@ -1,5 +1,5 @@
 using System;
-using Neo.Collections;
+using System.Collections.Generic;
 
 namespace Neo.Queues {
   /// <summary>
@@ -19,7 +19,7 @@ namespace Neo.Queues {
   /// queue.Play();
   /// ]]></example>
   public class Script : Base {
-    private List<IQueueable> list = new List<IQueueable>();
+    private readonly List<IQueueable> list = new List<IQueueable>();
     private int currentIndex;
 
     /// <summary>
