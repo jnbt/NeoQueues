@@ -33,7 +33,6 @@ can be included into your project.
 
 * Clone the repository
 * Open the folder as a Unity3D project
-* Install the *free* [Unity Testing Tools](https://www.assetstore.unity3d.com/#/content/13802) from the AssetStore
 * Install the *free* [Visual Studio Tools for Unity](http://unityvs.com) and import its Unity-package
 * Open `NeoQueues.sln`
 * [Build a DLL-File](http://forum.unity3d.com/threads/video-tutorial-how-to-use-visual-studio-for-all-your-unity-development.120327)
@@ -189,6 +188,10 @@ How you determine when it is finished is totally up to you.
 
 It was [headjump](https://github.com/headjump)'s concept and idea to structure any kind of asynchronous
 stuff by combining and nesting queue items. I've implemented this for our projects using Unity3D.
+
+## Testing
+
+Use Unity's embedded Test Runner via `Window -> General -> Test Runner`.
 
 ## Licenses
 
