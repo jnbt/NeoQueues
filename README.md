@@ -18,25 +18,23 @@ queueable items, but it ships with an API for:
 * Combining single items as a sequence (which results in one new queue item)
 * Combining single items to be played simultaneously (which results in one new queue item)
 
-## Installation
-
-If you don't have access to [Microsoft VisualStudio](http://msdn.microsoft.com/de-de/vstudio) you can just use Unity3D and its compiler.
-Or use your VisualStudio installation in combination with [Visual Studio Tools for Unity](http://unityvs.com) to compile a DLL-file, which
-can be included into your project.
-
 ### Using Unity3D
 
 * Clone the repository
 * Copy the files from `Assets\NeoQueues` into your project
+  * This folder also includes an Assembly definition file
 
 ### Using VisualStudio
 
 * Clone the repository
-* Open the folder as a Unity3D project
-* Install the *free* [Visual Studio Tools for Unity](http://unityvs.com) and import its Unity-package
-* Open `NeoQueues.sln`
-* [Build a DLL-File](http://forum.unity3d.com/threads/video-tutorial-how-to-use-visual-studio-for-all-your-unity-development.120327)
-* Import the DLL into your Unity3D project
+* Open `NeoAsync.sln` with Visual Studio
+* Build the solution using "Build -> Build NeoAsync"
+* Import the DLL (`obj/Release/NeoQueues.dll`) into your Unity3D project
+
+Hint: Unity currently always reset the LangVersion to "7.3" which isn't supported by Visual Studio. Therefor you need to manually
+set / revert the `LangVersion` to `6` in `NeoQueues.csproj`:
+
+    <LangVersion>6</LangVersion>
 
 ## Dependencies
 
