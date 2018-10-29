@@ -46,9 +46,7 @@ namespace Neo.Queues {
       : this(items, 0, block) {
     }
 
-    /// <summary>
-    /// Executes this queue item
-    /// </summary>
+    /// <inheritdoc />
     protected override void Execute() {
       while(i < initialBoost) perform();
       if(i < imax) nextItem();

@@ -65,9 +65,7 @@ namespace Neo.Queues {
       list.Insert(0, item);
     }
 
-    /// <summary>
-    /// Executes this queue item
-    /// </summary>
+    /// <inheritdoc />
     protected override void Execute() {
       currentIndex = -1;
       Proceed();

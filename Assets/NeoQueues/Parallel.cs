@@ -64,9 +64,7 @@ namespace Neo.Queues {
       list.Insert(0, q);
     }
 
-    /// <summary>
-    /// Executes this queue item
-    /// </summary>
+    /// <inheritdoc />
     protected override void Execute() {
       if(list.Count == 0) {
         Finished();

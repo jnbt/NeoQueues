@@ -40,6 +40,7 @@ namespace Neo.Queues {
       onTweenComplete();
     }
 
+    /// <inheritdoc />
     protected override void Execute() {
       isFinished = false;
       tween.OnComplete(onTweenComplete);
