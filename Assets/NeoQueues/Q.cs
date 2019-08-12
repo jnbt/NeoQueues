@@ -8,7 +8,7 @@ namespace Neo.Queues{
   /// <example><![CDATA[
   /// Q.Script(
   ///   Q.Parallel(
-  ///     Q.Tween(gameObject.transform, 1.5f, new TweenParms().Prop("position", targetPosition)),
+  ///     Q.Tween(gameObject.transform.DOMove(targetPorision, 1.5f)),
   ///     Q.Animation(gameObject.GetComponent<Animation>())
   ///   ),
   ///   Q.Delegation(invokeAfterAnimationAndTween)
@@ -51,24 +51,14 @@ namespace Neo.Queues{
       return new Delegation(what);
     }
 
-    /// <summary>
-    /// Wraps a HOTween tween into a queue item
-    /// </summary>
-    /// <param name="target">of the tween</param>
-    /// <param name="duration">of the tween</param>
-    /// <param name="targetParams">for the tween</param>
-    /// <returns>A new queue item from the tween</returns>
-    public static Tween Tween(object target, float duration, Holoville.HOTween.TweenParms targetParams){
-      return new Tween(target, duration, targetParams);
-    }
 
     /// <summary>
-    /// Wraps a HOTween tween sequence as a queue item
+    /// Wraps a DOTween tween into a queue item
     /// </summary>
-    /// <param name="sequence">to be wrapped</param>
-    /// <returns>A new queue item for the tween sequence</returns>
-    public static TweenSequence TweenSequence(Holoville.HOTween.Sequence sequence){
-      return new TweenSequence(sequence);
+    /// <param name="tween">to be queued</param>
+    /// <returns>A new queue item from the tween</returns>
+    public static DotTween Tween(DG.Tweening.Tween tween) {
+      return new DotTween(tween);
     }
 
     /// <summary>

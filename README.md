@@ -11,39 +11,35 @@ queueable items, but it ships with an API for:
 * Calling a synchronous delegates
 * Calling and waiting for an asynchronous task
 * Starting and waiting for a Unity animation
-* Starting and waiting for a [HOTween](http://hotween.demigiant.com) tween and a sequence of tweens
+* Starting and waiting for a [DOTween](https://github.com/Demigiant/dotween) tween and a sequence of tweens
 * Waiting for some seconds
 * Waiting for Unity's [YieldInstruction](http://docs.unity3d.com/ScriptReference/YieldInstruction.html)
 * Processing a list if items distributed over rendered frames
 * Combining single items as a sequence (which results in one new queue item)
 * Combining single items to be played simultaneously (which results in one new queue item)
 
-## Installation
-
-If you don't have access to [Microsoft VisualStudio](http://msdn.microsoft.com/de-de/vstudio) you can just use Unity3D and its compiler.
-Or use your VisualStudio installation in combination with [Visual Studio Tools for Unity](http://unityvs.com) to compile a DLL-file, which
-can be included into your project.
-
 ### Using Unity3D
 
 * Clone the repository
 * Copy the files from `Assets\NeoQueues` into your project
+  * This folder also includes an Assembly definition file
 
 ### Using VisualStudio
 
 * Clone the repository
-* Open the folder as a Unity3D project
-* Install the *free* [Unity Testing Tools](https://www.assetstore.unity3d.com/#/content/13802) from the AssetStore
-* Install the *free* [Visual Studio Tools for Unity](http://unityvs.com) and import its Unity-package
-* Open `NeoQueues.sln`
-* [Build a DLL-File](http://forum.unity3d.com/threads/video-tutorial-how-to-use-visual-studio-for-all-your-unity-development.120327)
-* Import the DLL into your Unity3D project
+* Open `NeoAsync.sln` with Visual Studio
+* Build the solution using "Build -> Build NeoAsync"
+* Import the DLL (`obj/Release/NeoQueues.dll`) into your Unity3D project
+
+Hint: Unity currently always reset the LangVersion to "7.3" which isn't supported by Visual Studio. Therefor you need to manually
+set / revert the `LangVersion` to `6` in `NeoQueues.csproj`:
+
+    <LangVersion>6</LangVersion>
 
 ## Dependencies
 
-* [NeoCollections](https://github.com/jnbt/NeoCollections)
 * [NeoAsync](https://github.com/jnbt/NeoAsync)
-* [HOTween](http://hotween.demigiant.com)
+* [DOTween](https://github.com/Demigiant/dotween) 
 
 ## General Usage
 
@@ -52,7 +48,7 @@ the next one. This library helps to create one unique flow when combining these 
 
 ### Example scenario
 
-Assume the following scenario where the program uses the [HOTween](http://hotween.demigiant.com) library and Unity animations:
+Assume the following scenario where the program uses the [DOTween](https://github.com/Demigiant/dotween) library and Unity animations:
 
 ```csharp
 void effectDying(Action callbackWhenFinished) {
@@ -64,7 +60,7 @@ void effectDying(Action callbackWhenFinished) {
   legAnimation.Play();
   headAnimation.Play();
   // wait for 0.5s is missing here
-  var bodyTween = HOTween.To(bodyTransform, 2.5f, new TweenParms().Prop("localScale", new Vector3(0f, 0.1f, 0)));
+  var bodyTween = bodyTransform.DOScale(new Vector3(0f, 0.1f, 0), 2.5f))
 
   //this is directly invoked and isn't a correct callback yet
   callbackWhenFinished()
@@ -106,7 +102,7 @@ void effectDying(Action callbackWhenFinished) {
       Q.Animation(headAnimation)
     ),
     Q.Timeout(0.5f),
-    Q.Tween(bodyTransform, 2.5f, new TweenParms().Prop("localScale", new Vector3(0f, 0.1f, 0)))
+    Q.Tween(bodyTransform.DOScale(new Vector3(0f, 0.1f, 0), 2.5f)))
   ).Play(callbackWhenFinished)
 }
 ```
@@ -118,8 +114,7 @@ of this interface can be used in the main queue items `Script` and `Parallel`.
 
 ### Example of a further implementation
 
-Assume you want to embed an [AudioSource](http://docs.unity3d.com/ScriptReference/AudioSource.html) into a queue, you need
-provide a wrapper instance for the audio clip:
+Assume you want to embed an [AudioSource](http://docs.unity3d.com/ScriptReference/AudioSource.html) into a queue, you need provide a wrapper instance for the audio clip:
 
 ```csharp
 var audioSource = gameObject.GetComponent<AudioSource>();
@@ -190,14 +185,21 @@ How you determine when it is finished is totally up to you.
 It was [headjump](https://github.com/headjump)'s concept and idea to structure any kind of asynchronous
 stuff by combining and nesting queue items. I've implemented this for our projects using Unity3D.
 
+## Testing
+
+Use Unity's embedded Test Runner via `Window -> General -> Test Runner`.
+
 ## Licenses
 
 For the license of this project please have a look at LICENSE.txt
 
-### HOTween
+### DOTween
 
-    HOTween License
-    Copyright (c) 2012 Daniele Giardini - DEMIGIANT
-    Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-    The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+    Copyright (c) 2015 Daniele Giardini, Demigiant
+
+    To check out DOTween license, visit this page: http://dotween.demigiant.com/license.php
+
+    In short:
+    - You can freely use DOTween in both commercial and non-commercial projects
+    - You can redistribute verbatim copies of the code, along with any readme files and attributions
+    - You can modify the code only for your own use and you cannot redistribute modified versions (but you can send pull requests to me)

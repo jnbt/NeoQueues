@@ -21,9 +21,7 @@ namespace Neo.Queues {
       this.what = what;
     }
 
-    /// <summary>
-    /// Executes this queue item
-    /// </summary>
+    /// <inheritdoc />
     protected override void Execute() {
       if(what != null) what();
       Finished();

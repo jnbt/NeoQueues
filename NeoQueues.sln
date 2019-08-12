@@ -1,10 +1,11 @@
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeoQueues.CSharp", "NeoQueues.CSharp.csproj", "{4922DED0-428E-4FE7-B785-5C9BEBC2464C}"
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeoQueues", "NeoQueues.csproj", "{3E7CA8C6-BEEE-FC31-744B-A6ABFE1142E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeoQueues.CSharp.Editor", "NeoQueues.CSharp.Editor.csproj", "{CFB32BAB-1090-41CE-9AFF-006CFB0F908C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests.csproj", "{39C38C96-7E83-A5A2-2492-A820947A400D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-firstpass", "Assembly-CSharp-firstpass.csproj", "{D62023A0-053B-8C9E-16F9-A5F06832C2D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,14 +13,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4922DED0-428E-4FE7-B785-5C9BEBC2464C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4922DED0-428E-4FE7-B785-5C9BEBC2464C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4922DED0-428E-4FE7-B785-5C9BEBC2464C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4922DED0-428E-4FE7-B785-5C9BEBC2464C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CFB32BAB-1090-41CE-9AFF-006CFB0F908C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CFB32BAB-1090-41CE-9AFF-006CFB0F908C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CFB32BAB-1090-41CE-9AFF-006CFB0F908C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CFB32BAB-1090-41CE-9AFF-006CFB0F908C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E7CA8C6-BEEE-FC31-744B-A6ABFE1142E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E7CA8C6-BEEE-FC31-744B-A6ABFE1142E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E7CA8C6-BEEE-FC31-744B-A6ABFE1142E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E7CA8C6-BEEE-FC31-744B-A6ABFE1142E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39C38C96-7E83-A5A2-2492-A820947A400D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39C38C96-7E83-A5A2-2492-A820947A400D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39C38C96-7E83-A5A2-2492-A820947A400D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39C38C96-7E83-A5A2-2492-A820947A400D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D62023A0-053B-8C9E-16F9-A5F06832C2D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D62023A0-053B-8C9E-16F9-A5F06832C2D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D62023A0-053B-8C9E-16F9-A5F06832C2D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D62023A0-053B-8C9E-16F9-A5F06832C2D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -27,18 +32,26 @@ Global
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Assembly-CSharp.csproj
 		Policies = $0
-		$0.TextStylePolicy = $3
-		$1.inheritsSet = null
-		$1.scope = text/x-csharp
-		$0.CSharpFormattingPolicy = $2
-		$2.inheritsSet = Mono
-		$2.inheritsScope = text/x-csharp
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = PrefixedHierarchical
+		$0.TextStylePolicy = $2
+		$2.TabWidth = 2
+		$2.TabsToSpaces = True
+		$2.IndentWidth = 2
 		$2.scope = text/x-csharp
-		$3.FileWidth = 120
-		$3.TabWidth = 4
-		$3.EolMarker = Unix
-		$3.inheritsSet = Mono
-		$3.inheritsScope = text/plain
-		$3.scope = text/plain
+		$0.CSharpFormattingPolicy = $3
+		$3.NewLinesForBracesInTypes = False
+		$3.NewLinesForBracesInMethods = False
+		$3.NewLinesForBracesInProperties = False
+		$3.NewLinesForBracesInAccessors = False
+		$3.NewLinesForBracesInAnonymousMethods = False
+		$3.NewLinesForBracesInControlBlocks = False
+		$3.NewLinesForBracesInAnonymousTypes = False
+		$3.NewLinesForBracesInObjectCollectionArrayInitializers = False
+		$3.NewLinesForBracesInLambdaExpressionBody = False
+		$3.NewLineForElse = False
+		$3.NewLineForCatch = False
+		$3.NewLineForFinally = False
+		$3.scope = text/x-csharp
 	EndGlobalSection
 EndGlobal
